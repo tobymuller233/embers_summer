@@ -1,0 +1,227 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20rpx;
+}
+
+.calendar-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 30rpx;
+  padding: 20rpx;
+  margin: 20rpx;
+}
+
+.calendar-header {
+  padding: 20rpx 0;
+}
+
+.month-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.arrow {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow.disabled {
+  opacity: 0.3;
+}
+
+.arrow-text {
+  color: #007AFF;
+  font-size: 32rpx;
+}
+
+.month-text {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.weekdays {
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20rpx;
+  margin: 0 20rpx;
+}
+
+.weekday {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.calendar-swiper {
+  height: 720rpx;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8rpx;
+  padding: 10rpx;
+  width: 100%;
+}
+
+.day-cell {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 4rpx 0;
+}
+
+.day-cell.empty {
+  display: none;
+}
+
+.day-number {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  font-size: 28rpx;
+  color: #333;
+  z-index: 2;
+  position: absolute;
+  top: 10rpx;
+}
+
+.day-cell.today .day-number {
+  color: #FF0000;
+}
+
+.day-cell.selected .day-number {
+  background-color: rgba(0, 122, 255, 0.2);
+}
+
+.day-count {
+  font-size: 24rpx;
+  color: #007AFF;
+  margin-top: 4rpx;
+  z-index: 2;
+}
+
+.today .day-number {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #FF0000;
+}
+
+.selected .day-number {
+  background-color: #007AFF;
+  color: #FFFFFF;
+}
+
+.other-month .day-number {
+  color: #999;
+}
+
+.ice-cream-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  position: absolute;
+  bottom: 10rpx;
+  z-index: 2;
+}
+
+.emoji {
+  font-size: 24rpx;
+}
+
+.count {
+  color: #007AFF;
+  margin-left: 4rpx;
+}
+
+.bottom-buttons {
+  margin-top: auto;
+  padding: 20rpx;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 30rpx;
+  padding: 20rpx;
+}
+
+.button {
+  width: 100rpx;
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-icon {
+  font-size: 50rpx;
+}
+
+.reset .button-icon {
+  color: #FF0000;
+}
+
+.add .button-icon {
+  color: #007AFF;
+}
+
+.change-bg-button {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.change-bg-button .button-icon {
+  font-size: 40rpx;
+} 

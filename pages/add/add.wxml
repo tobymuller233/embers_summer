@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="form">
+    <view class="date-display">
+      {{year}}年{{month + 1}}月{{day}}日
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">当前数量：{{currentCount}}</view>
+      <input type="number" 
+             class="input" 
+             placeholder="请输入数量" 
+             value="{{count}}"
+             bindinput="onCountChange"/>
+    </view>
+
+    <view class="button-group">
+      <button class="button add" bindtap="onAdd">添加</button>
+      <button class="button set" bindtap="onSet">设置</button>
+    </view>
+  </view>
+</view> 

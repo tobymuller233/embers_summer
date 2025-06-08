@@ -1,0 +1,63 @@
+<view class="container">
+  <view class="background">
+    <image wx:if="{{backgroundImage}}" src="{{backgroundImage}}" mode="aspectFit" class="background-image"></image>
+    <image wx:else src="/images/background.png" mode="aspectFit" class="background-image"></image>
+  </view>
+
+  <view class="content">
+    <view class="change-bg-button" bindtap="chooseImage">
+      <text class="button-icon">🖼️</text>
+    </view>
+
+    <view class="calendar-container">
+      <view class="calendar-header">
+        <view class="month-selector">
+          <view class="arrow {{canMoveLeft ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="-1">
+            <text class="arrow-text">◀</text>
+          </view>
+          <view class="month-text">{{year}}年{{month + 1}}月</view>
+          <view class="arrow {{canMoveRight ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="1">
+            <text class="arrow-text">▶</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="weekdays">
+        <view class="weekday" wx:for="{{weekdays}}" wx:key="*this">{{item}}</view>
+      </view>
+
+      <swiper class="calendar-swiper" current="{{currentPage}}" bindchange="onSwiperChange">
+        <block wx:for="{{monthPages}}" wx:key="date">
+          <swiper-item>
+            <view class="month-grid">
+              <block wx:for="{{item.days}}" wx:key="id">
+                <view class="day-cell {{item.isToday ? 'today' : ''}} {{item.isSelected ? 'selected' : ''}} {{!item.isCurrentMonth ? 'other-month' : ''}}" 
+                      bindtap="selectDate" 
+                      data-date="{{item.date}}"
+                      wx:if="{{item.day !== null}}">
+                  <view class="day-number">{{item.day}}</view>
+                  <view class="ice-cream-count" wx:if="{{item.count > 0}}">
+                    <text class="emoji">🍦</text>
+                    <text class="count">×{{item.count}}</text>
+                  </view>
+                </view>
+                <view class="day-cell empty" wx:else></view>
+              </block>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+
+    <view class="bottom-buttons">
+      <view class="button-container">
+        <view class="button reset" bindtap="showResetConfirm">
+          <text class="button-icon">🗑️</text>
+        </view>
+        <view class="button add" bindtap="navigateToAdd">
+          <text class="button-icon">➕</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 
