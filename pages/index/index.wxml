@@ -16,7 +16,6 @@
           <view class="current-month">{{year}}年{{month + 1}}月</view>
           <view class="arrow {{canMoveRight ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="1">▶</view>
         </view>
-        <view class="clear-button" bindtap="clearAllData">清空数据</view>
       </view>
 
       <view class="weekdays">

@@ -36,20 +36,15 @@
 }
 
 .calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20rpx;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 20rpx;
+  padding: 20rpx 0;
   margin-bottom: 20rpx;
 }
 
 .month-selector {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 20rpx;
+  gap: 40rpx;
 }
 
 .arrow {
@@ -92,7 +87,7 @@
 }
 
 .calendar-swiper {
-  height: 720rpx;
+  height: 770rpx;
 }
 
 .month-grid {
@@ -165,30 +160,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8rpx;
+  gap: 4rpx;
   position: absolute;
-  bottom: -20rpx;
+  top: 80rpx;
   z-index: 1;
-  padding-top: 40rpx;
+  width: 100%;
 }
 
 .ice-cream-count {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24rpx;
+  font-size: 22rpx;
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 4rpx 8rpx;
-  border-radius: 20rpx;
+  padding: 2rpx 6rpx;
+  border-radius: 16rpx;
+  width: fit-content;
+  min-width: 70rpx;
+  height: 36rpx;
 }
 
 .emoji {
-  font-size: 24rpx;
+  font-size: 22rpx;
 }
 
 .count {
   color: #007AFF;
-  margin-left: 4rpx;
+  margin-left: 2rpx;
+  font-size: 22rpx;
 }
 
 .bottom-buttons {
