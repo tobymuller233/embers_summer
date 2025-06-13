@@ -1,53 +1,51 @@
-const STORAGE_KEY = 'iceCreamRecords'
+const STORAGE_KEY = 'ice_cream_records'
 
-class IceCreamStore {
-  constructor() {
-    this.records = wx.getStorageSync('iceCreamRecords') || []
-  }
-
-  save() {
-    wx.setStorageSync('iceCreamRecords', this.records)
-  }
-
-  addRecord(date, count) {
-    const record = this.records.find(r => this.isSameDay(new Date(r.date), new Date(date)))
-    if (record) {
-      record.count = count
-    } else {
-      this.records.push({
-        date: new Date(date).toISOString(),
-        count: count
-      })
+const store = {
+  // 获取指定日期的冰淇淋数量
+  getCount: function(date) {
+    try {
+      const records = wx.getStorageSync(STORAGE_KEY) || {}
+      const record = records[date] || { cone: 0, cup: 0 }
+      return record
+    } catch (error) {
+      console.error('获取记录错误:', error)
+      return { cone: 0, cup: 0 }
     }
-    this.save()
-  }
+  },
 
-  getCount(date) {
-    const record = this.records.find(r => this.isSameDay(new Date(r.date), new Date(date)))
-    return record ? record.count : 0
-  }
-
-  resetAll() {
-    this.records = []
-    this.save()
-  }
-
-  isSameDay(date1, date2) {
-    if (!(date1 instanceof Date) || !(date2 instanceof Date)) {
-      return false
+  // 增加指定日期的冰淇淋数量
+  addCount: function(date, type) {
+    try {
+      const records = wx.getStorageSync(STORAGE_KEY) || {}
+      if (!records[date]) {
+        records[date] = { cone: 0, cup: 0 }
+      }
+      records[date][type]++
+      wx.setStorageSync(STORAGE_KEY, records)
+    } catch (error) {
+      console.error('添加记录错误:', error)
     }
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate()
-  }
+  },
 
-  generateId() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0
-      const v = c === 'x' ? r : (r & 0x3 | 0x8)
-      return v.toString(16)
-    })
+  // 重置指定日期的冰淇淋数量
+  resetCount: function(date) {
+    try {
+      const records = wx.getStorageSync(STORAGE_KEY) || {}
+      records[date] = { cone: 0, cup: 0 }
+      wx.setStorageSync(STORAGE_KEY, records)
+    } catch (error) {
+      console.error('重置记录错误:', error)
+    }
+  },
+
+  // 重置所有记录
+  resetAll: function() {
+    try {
+      wx.setStorageSync(STORAGE_KEY, {})
+    } catch (error) {
+      console.error('重置所有记录错误:', error)
+    }
   }
 }
 
-module.exports = new IceCreamStore() 
+module.exports = store 

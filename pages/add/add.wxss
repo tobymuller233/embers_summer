@@ -18,6 +18,28 @@
   margin-bottom: 40rpx;
 }
 
+.count-display {
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.count-item {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.emoji {
+  font-size: 40rpx;
+}
+
+.count {
+  font-size: 32rpx;
+  color: #333;
+}
+
 .input-group {
   margin-bottom: 40rpx;
 }
@@ -37,13 +59,16 @@
 
 .button-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   gap: 20rpx;
+  margin-bottom: 40rpx;
+  flex-wrap: nowrap;
 }
 
 .button {
-  width: 200rpx;
-  height: 200rpx;
+  width: 160rpx;
+  height: 160rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -53,13 +78,24 @@
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 }
 
+.button.small {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+}
+
 .button-icon {
-  font-size: 60rpx;
+  font-size: 50rpx;
   margin-bottom: 10rpx;
 }
 
+.button.small .button-icon {
+  font-size: 40rpx;
+  margin-bottom: 0;
+}
+
 .button-text {
-  font-size: 28rpx;
+  font-size: 24rpx;
   color: #333;
   line-height: 1;
   margin-top: 4rpx;
@@ -69,6 +105,52 @@
   background-color: #007AFF;
 }
 
+.button.add .button-text {
+  color: #fff;
+}
+
+.button.minus {
+  background-color: #FF3B30;
+}
+
+.button.minus .button-text {
+  color: #fff;
+}
+
 .button.set {
   background-color: #34C759;
+}
+
+.bottom-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-top: 40rpx;
+}
+
+.button.reset,
+.button.confirm {
+  flex: 1;
+  height: 100rpx;
+  flex-direction: row;
+}
+
+.button.reset {
+  background-color: #FF3B30;
+}
+
+.button.confirm {
+  background-color: #34C759;
+}
+
+.button.reset .button-icon,
+.button.confirm .button-icon {
+  margin-bottom: 0;
+  margin-right: 10rpx;
+  color: #fff;
+}
+
+.button.reset .button-text,
+.button.confirm .button-text {
+  color: #fff;
 } 

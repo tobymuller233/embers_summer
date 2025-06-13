@@ -1,21 +1,44 @@
 <view class="container">
   <view class="form">
-    <view class="date-display">
-      {{year}}年{{month + 1}}月{{day}}日
-    </view>
-
-    <view class="input-group">
-      <view class="input-label">当前数量：{{currentCount}}</view>
-      <input type="number" 
-             class="input" 
-             placeholder="请输入数量" 
-             value="{{count}}"
-             bindinput="onCountChange"/>
+    <view class="date-display">{{displayDate}}</view>
+    
+    <view class="count-display">
+      <view class="count-item">
+        <text class="emoji">🍦</text>
+        <text class="count">×{{tempConeCount}}</text>
+      </view>
+      <view class="count-item">
+        <text class="emoji">🍨</text>
+        <text class="count">×{{tempCupCount}}</text>
+      </view>
     </view>
 
     <view class="button-group">
-      <button class="button add" bindtap="onAdd">添加</button>
-      <button class="button set" bindtap="onSet">设置</button>
+      <view class="button add" bindtap="addCone">
+        <text class="button-icon">🍦</text>
+        <text class="button-text">添加甜筒</text>
+      </view>
+      <view class="button minus small" bindtap="minusCone">
+        <text class="button-icon">-</text>
+      </view>
+      <view class="button minus small" bindtap="minusCup">
+        <text class="button-icon">-</text>
+      </view>
+      <view class="button add" bindtap="addCup">
+        <text class="button-icon">🍨</text>
+        <text class="button-text">添加杯装</text>
+      </view>
+    </view>
+
+    <view class="bottom-buttons">
+      <view class="button reset" bindtap="resetCount">
+        <text class="button-icon">↺</text>
+        <text class="button-text">重置</text>
+      </view>
+      <view class="button confirm" bindtap="confirmChanges">
+        <text class="button-icon">✓</text>
+        <text class="button-text">确定</text>
+      </view>
     </view>
   </view>
 </view> 

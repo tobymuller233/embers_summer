@@ -12,14 +12,11 @@
     <view class="calendar-container">
       <view class="calendar-header">
         <view class="month-selector">
-          <view class="arrow {{canMoveLeft ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="-1">
-            <text class="arrow-text">◀</text>
-          </view>
-          <view class="month-text">{{year}}年{{month + 1}}月</view>
-          <view class="arrow {{canMoveRight ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="1">
-            <text class="arrow-text">▶</text>
-          </view>
+          <view class="arrow {{canMoveLeft ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="-1">◀</view>
+          <view class="current-month">{{year}}年{{month + 1}}月</view>
+          <view class="arrow {{canMoveRight ? '' : 'disabled'}}" bindtap="moveMonth" data-direction="1">▶</view>
         </view>
+        <view class="clear-button" bindtap="clearAllData">清空数据</view>
       </view>
 
       <view class="weekdays">
@@ -36,9 +33,11 @@
                       data-date="{{item.date}}"
                       wx:if="{{item.day !== null}}">
                   <view class="day-number">{{item.day}}</view>
-                  <view class="ice-cream-count" wx:if="{{item.count > 0}}">
-                    <text class="emoji">🍦</text>
-                    <text class="count">×{{item.count}}</text>
+                  <view class="ice-cream-counts" wx:if="{{item.iceCreams.length > 0}}">
+                    <view class="ice-cream-count" wx:for="{{item.iceCreams}}" wx:key="type" wx:for-item="iceCream">
+                      <text class="emoji">{{iceCream.type === 'cone' ? '🍦' : '🍨'}}</text>
+                      <text class="count">×{{iceCream.count}}</text>
+                    </view>
                   </view>
                 </view>
                 <view class="day-cell empty" wx:else></view>
@@ -51,9 +50,6 @@
 
     <view class="bottom-buttons">
       <view class="button-container">
-        <view class="button reset" bindtap="showResetConfirm">
-          <text class="button-icon">🗑️</text>
-        </view>
         <view class="button add" bindtap="navigateToAdd">
           <text class="button-icon">➕</text>
         </view>

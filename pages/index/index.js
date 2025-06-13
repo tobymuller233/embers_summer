@@ -10,7 +10,8 @@ Page({
     month: new Date().getMonth(),
     canMoveLeft: true,
     canMoveRight: true,
-    backgroundImage: ''
+    backgroundImage: '',
+    iceCreamData: {}
   },
 
   onLoad: function() {
@@ -35,6 +36,12 @@ Page({
       if (backgroundImage) {
         this.setData({ backgroundImage })
       }
+
+      // 加载冰淇淋数据
+      const iceCreamData = wx.getStorageSync('iceCreamData')
+      if (iceCreamData) {
+        this.setData({ iceCreamData })
+      }
     } catch (error) {
       console.error('初始化错误:', error)
     }
@@ -42,7 +49,37 @@ Page({
 
   onShow: function() {
     try {
-      this.initCalendar()
+      // 获取保存的选中日期
+      const savedDate = wx.getStorageSync('selectedDate')
+      if (savedDate) {
+        const date = new Date(savedDate)
+        const year = date.getFullYear()
+        const month = date.getMonth()
+        
+        // 重新加载冰淇淋数据
+        const iceCreamData = wx.getStorageSync('iceCreamData') || {}
+        
+        // 一次性更新所有数据
+        this.setData({
+          selectedDate: savedDate,
+          year: year,
+          month: month,
+          iceCreamData: iceCreamData
+        })
+        
+        // 重新初始化日历数据
+        this.initCalendar()
+        
+        wx.removeStorageSync('selectedDate')
+      }
+      
+      // 只在没有保存日期时加载背景图片
+      if (!savedDate) {
+        const backgroundImage = wx.getStorageSync('backgroundImage')
+        if (backgroundImage) {
+          this.setData({ backgroundImage })
+        }
+      }
     } catch (error) {
       console.error('显示错误:', error)
     }
@@ -109,13 +146,13 @@ Page({
       const lastDay = new Date(year, month + 1, 0)
       const days = []
       
-      // 添加调试信息
-    //   console.log('生成月份数据:', {
-    //     year: year,
-    //     month: month + 1,  // 显示时月份+1
-    //     firstDayWeek: firstDay.getDay(),
-    //     firstDayDate: firstDay.toISOString()
-    //   })
+      // // 添加调试信息
+      // console.log('生成月份数据:', {
+      //   year: year,
+      //   month: month + 1,  // 显示时月份+1
+      //   firstDayWeek: firstDay.getDay(),
+      //   firstDayDate: firstDay.toISOString()
+      // })
       
       // 填充上个月的日期
       const firstDayWeek = firstDay.getDay()
@@ -123,15 +160,16 @@ Page({
         const prevMonthLastDay = new Date(year, month, 0)
         const prevMonthDay = prevMonthLastDay.getDate() - firstDayWeek + i + 1
         const prevMonthDate = new Date(year, month - 1, prevMonthDay)
+        const dateStr = this.formatDate(prevMonthDate)
         
         days.push({
           id: `prev-${i}`,
           day: prevMonthDay,
-          date: prevMonthDate.toISOString(),
+          date: dateStr,
           isToday: false,
           isSelected: false,
           isCurrentMonth: false,
-          count: 0
+          iceCreams: []
         })
       }
       
@@ -141,10 +179,9 @@ Page({
       
       for (let i = 1; i <= lastDay.getDate(); i++) {
         const currentDate = new Date(year, month, i)
-        const dateStr = currentDate.toISOString()
-        
-        const count = store.getCount(dateStr)
+        const dateStr = this.formatDate(currentDate)
         const isToday = this.isSameDay(currentDate, today)
+        const iceCreams = this.data.iceCreamData[dateStr] || []
         
         days.push({
           id: dateStr,
@@ -153,7 +190,7 @@ Page({
           isToday: isToday,
           isSelected: this.isSameDay(currentDate, selectedDate),
           isCurrentMonth: true,
-          count: count
+          iceCreams: iceCreams
         })
       }
       
@@ -161,15 +198,16 @@ Page({
       const remainingDays = 42 - days.length
       for (let i = 1; i <= remainingDays; i++) {
         const nextMonthDate = new Date(year, month + 1, i)
+        const dateStr = this.formatDate(nextMonthDate)
         
         days.push({
           id: `next-${i}`,
           day: i,
-          date: nextMonthDate.toISOString(),
+          date: dateStr,
           isToday: false,
           isSelected: false,
           isCurrentMonth: false,
-          count: 0
+          iceCreams: []
         })
       }
       
@@ -310,6 +348,76 @@ Page({
       })
     } catch (error) {
       console.error('选择图片错误:', error)
+    }
+  },
+
+  // 获取某天的冰淇淋数据
+  getIceCreamsForDate(date) {
+    const dateStr = this.formatDate(date);
+    const dayData = this.data.iceCreamData[dateStr] || [];
+    // 保持原始添加顺序
+    return dayData;
+  },
+
+  // 添加冰淇淋记录
+  addIceCream(date, type, count) {
+    const dateStr = this.formatDate(date);
+    const dayData = this.data.iceCreamData[dateStr] || [];
+    
+    // 检查是否已存在该类型的记录
+    const existingIndex = dayData.findIndex(item => item.type === type);
+    
+    if (existingIndex !== -1) {
+      // 如果已存在，更新数量
+      dayData[existingIndex].count += count;
+    } else {
+      // 如果不存在，添加新记录（保持添加顺序）
+      dayData.push({
+        type: type,
+        count: count
+      });
+    }
+    
+    this.setData({
+      [`iceCreamData.${dateStr}`]: dayData
+    });
+    
+    // 保存到本地存储
+    wx.setStorageSync('iceCreamData', this.data.iceCreamData);
+  },
+
+  formatDate: function(date) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
+  },
+
+  clearAllData: function() {
+    try {
+      wx.showModal({
+        title: '确认清空',
+        content: '确定要清空所有数据吗？此操作不可恢复。',
+        success: (res) => {
+          if (res.confirm) {
+            // 清空冰淇淋数据
+            wx.removeStorageSync('iceCreamData')
+            this.setData({
+              iceCreamData: {}
+            })
+            
+            // 重新初始化日历
+            this.initCalendar()
+            
+            wx.showToast({
+              title: '数据已清空',
+              icon: 'success'
+            })
+          }
+        }
+      })
+    } catch (error) {
+      console.error('清空数据错误:', error)
     }
   }
 }) 
